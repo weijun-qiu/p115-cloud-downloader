@@ -18,7 +18,6 @@ p115-cloud-downloader.config
 
 # Local data
 watch/
-!watch/.gitkeep
 
 # IDEs
 .vscode/
