@@ -1,0 +1,11 @@
+[project]
+name = "p115-cloud-downloader"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "p115client>=0.0.8.4.8",
+    "python-dotenv>=1.2.2",
+    "watchdog>=6.0.0",
+]
