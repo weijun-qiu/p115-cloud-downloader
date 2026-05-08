@@ -71,10 +71,11 @@ class P115Downloader:
                 logger.error(f"Failed to add torrent: {resp.get('error')}")
                 return False
         except Exception as e:
-            # Handle "Task already exists" error (10008)
-            # This is usually raised by check_response(resp)
-            if '10008' in str(e) or (hasattr(e, 'args') and any('10008' in str(arg) for arg in e.args)):
-                logger.info(f"Torrent task already exists on 115: {torrent_path}")
+            # Handle "Task already exists" error (10008) or "Invalid link" (10004)
+            # 10004 can sometimes occur for duplicate magnets in some API versions
+            if any(code in str(e) for code in ['10008', '10004']) or \
+               (hasattr(e, 'args') and any(any(code in str(arg) for code in ['10008', '10004']) for arg in e.args)):
+                logger.info(f"Torrent task already exists or invalid on 115: {torrent_path}")
                 return True
             logger.error(f"Exception adding torrent: {e}")
             return False
@@ -98,9 +99,10 @@ class P115Downloader:
                 logger.error(f"Failed to add magnet: {resp.get('error')}")
                 return False
         except Exception as e:
-            # Handle "Task already exists" error (10008)
-            if '10008' in str(e) or (hasattr(e, 'args') and any('10008' in str(arg) for arg in e.args)):
-                logger.info("Magnet task already exists on 115.")
+            # Handle "Task already exists" error (10008) or "Invalid link" (10004)
+            if any(code in str(e) for code in ['10008', '10004']) or \
+               (hasattr(e, 'args') and any(any(code in str(arg) for code in ['10008', '10004']) for arg in e.args)):
+                logger.info("Magnet task already exists or invalid on 115.")
                 return True
             logger.error(f"Exception adding magnet: {e}")
             return False
