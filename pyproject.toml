@@ -5,6 +5,7 @@ description = "Automated local directory monitor for 115 Cloud offline downloadi
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "bencode-py>=4.0.0",
     "p115client>=0.0.8.4.8",
     "python-dotenv>=1.2.2",
     "watchdog>=6.0.0",

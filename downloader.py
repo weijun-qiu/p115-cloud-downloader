@@ -1,4 +1,6 @@
 import logging
+import hashlib
+import bencode
 from p115client import P115Client, check_response
 from config import config
 
@@ -47,8 +49,20 @@ class P115Downloader:
         cid = self.get_target_cid()
         logger.info(f"Adding torrent: {torrent_path} to CID: {cid}")
         try:
-            # Assuming offline_add_torrent takes a file path
-            resp = self.client.offline_add_torrent(torrent_path, cid=cid)
+            # Calculate info_hash locally
+            with open(torrent_path, 'rb') as f:
+                torrent_data = bencode.decode(f.read())
+                info_section = bencode.encode(torrent_data['info'])
+                info_hash = hashlib.sha1(info_section).hexdigest()
+                logger.info(f"Calculated info_hash: {info_hash}")
+
+            # Prepare payload for offline_add_torrent
+            # Based on documentation, it takes info_hash and wp_path_id
+            payload = {
+                "info_hash": info_hash,
+                "wp_path_id": cid
+            }
+            resp = self.client.offline_add_torrent(payload)
             check_response(resp)
             if resp.get("state"):
                 logger.info(f"Successfully added torrent task: {torrent_path}")
@@ -65,8 +79,12 @@ class P115Downloader:
         cid = self.get_target_cid()
         logger.info(f"Adding magnet link to CID: {cid}")
         try:
-            # Assuming offline_add_url takes a URL
-            resp = self.client.offline_add_url(magnet_link, cid=cid)
+            # Using offline_add_urls which supports wp_path_id
+            payload = {
+                "urls": magnet_link,
+                "wp_path_id": cid
+            }
+            resp = self.client.offline_add_urls(payload)
             check_response(resp)
             if resp.get("state"):
                 logger.info("Successfully added magnet task")
