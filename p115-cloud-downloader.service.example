@@ -1,0 +1,26 @@
+[Unit]
+Description=P115 Cloud Downloader Service
+After=network.target
+
+[Service]
+# User and Group that will run the service
+# Change these to your actual username and group
+User=yourusername
+Group=yourgroup
+
+# Path to the repository directory
+WorkingDirectory=/path/to/p115-cloud-downloader
+
+# Path to the python executable and main script
+# If using uv, you can use the path to the virtualenv python
+ExecStart=/path/to/p115-cloud-downloader/.venv/bin/python main.py
+
+# Optional: specify a custom config path
+# ExecStart=/path/to/p115-cloud-downloader/.venv/bin/python main.py --config /path/to/custom.config
+
+# Restart settings
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

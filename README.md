@@ -78,6 +78,26 @@ The application will:
 2. Start monitoring `WATCH_DIR` for new additions.
 3. Move successfully added tasks to `WATCH_DIR/processed`.
 
+### Running as a Systemd Service (Linux)
+
+A template service file is provided: `p115-cloud-downloader.service.example`.
+
+1. Copy the template to the systemd directory:
+   ```bash
+   sudo cp p115-cloud-downloader.service.example /etc/systemd/system/p115-cloud-downloader.service
+   ```
+
+2. Edit the service file to match your environment:
+   - Change `User` and `Group`.
+   - Update `WorkingDirectory` and `ExecStart` paths.
+
+3. Enable and start the service:
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl enable p115-cloud-downloader.service
+   sudo systemctl start p115-cloud-downloader.service
+   ```
+
 ## Development
 
 Run tests:
