@@ -9,7 +9,7 @@ A lightweight, automated tool to monitor a local directory for torrent files and
 - **Format Support**: Handles `.torrent` files, `.magnet` files, and `.txt` files containing magnet links.
 - **Smart File Management**: Successfully processed files are automatically moved to a `processed` subfolder to keep your workspace clean.
 - **Customizable Target**: Configure your cloud target directory via path or CID.
-- **Verbose Configuration**: Fully customizable via `p115-cloud-downloader.config`.
+- **Verbose Configuration**: Fully customizable via `p115_cloud_downloader.config`.
 
 ## Prerequisites
 
@@ -44,10 +44,10 @@ A lightweight, automated tool to monitor a local directory for torrent files and
 
 1. Copy the example configuration file:
    ```bash
-   cp p115-cloud-downloader.config.example p115-cloud-downloader.config
+   cp p115_cloud_downloader.config.example p115_cloud_downloader.config
    ```
 
-2. Edit `p115-cloud-downloader.config` with your settings:
+2. Edit `p115_cloud_downloader.config` with your settings:
    - **P115_COOKIES**: Your 115.com login cookies.
    - **WATCH_DIR**: Local folder to monitor (default: `./watch`).
    - **TARGET_PATH**: Cloud folder path (default: `/云下载`).

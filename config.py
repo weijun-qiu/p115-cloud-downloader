@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Default config filename
-DEFAULT_CONFIG_FILE = "p115-cloud-downloader.config"
+DEFAULT_CONFIG_FILE = "p115_cloud_downloader.config"
 
 class Config:
     def __init__(self):
@@ -46,6 +46,8 @@ class Config:
 
     def validate(self):
         if not self.P115_COOKIES:
+            if not Path(DEFAULT_CONFIG_FILE).exists() and not os.getenv("P115_COOKIES"):
+                 raise ValueError(f"Configuration file '{DEFAULT_CONFIG_FILE}' not found. Please create it from the example.")
             raise ValueError("P115_COOKIES must be set in the config file or environment.")
         
         watch_path = Path(self.WATCH_DIR)
