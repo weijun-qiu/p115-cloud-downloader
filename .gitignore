@@ -13,7 +13,9 @@ env/
 venv/
 
 # Configuration
+p115_cloud_downloader.config
 p115-cloud-downloader.config
+*.config
 .env
 
 # Local data
