@@ -53,8 +53,6 @@ A lightweight, automated tool to monitor a local directory for torrent files and
    - **TARGET_PATH**: Cloud folder path (default: `/云下载`).
    - **LOG_LEVEL**: Logging verbosity (default: `INFO`).
 
-## Usage
-
 Start the downloader:
 
 ```bash
@@ -65,6 +63,14 @@ Or using standard python:
 
 ```bash
 python main.py
+```
+
+### Custom Configuration Path
+
+You can specify a custom configuration file using the `--config` argument:
+
+```bash
+python main.py --config /path/to/your/custom.config
 ```
 
 The application will:

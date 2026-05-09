@@ -4,6 +4,7 @@ from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+import argparse
 from config import config
 from downloader import P115Downloader
 
@@ -16,12 +17,16 @@ def get_downloader():
         _downloader = P115Downloader()
     return _downloader
 
-# Configure logging
-logging.basicConfig(
-    level=getattr(logging, config.LOG_LEVEL, logging.INFO),
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
 logger = logging.getLogger(__name__)
+
+def setup_logging():
+    # Configure logging based on current config
+    level = getattr(logging, config.LOG_LEVEL, logging.INFO)
+    logging.basicConfig(
+        level=level,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        force=True # Force re-configuration if already configured
+    )
 
 class TorrentHandler(FileSystemEventHandler):
     def on_created(self, event):
@@ -77,10 +82,22 @@ class TorrentHandler(FileSystemEventHandler):
             logger.error(f"Error moving file to processed: {e}")
 
 def main():
+    parser = argparse.ArgumentParser(description="P115 Cloud Downloader - Monitor a directory and upload torrents/magnets to 115.")
+    parser.add_argument("--config", help="Path to a custom configuration file")
+    args = parser.parse_args()
+
     try:
+        if args.config:
+            config.load(args.config)
+        
+        # Setup logging after config is loaded
+        setup_logging()
+        
         config.validate()
-    except ValueError as e:
-        logger.error(e)
+    except Exception as e:
+        # Fallback logging if config fails
+        logging.basicConfig(level=logging.INFO)
+        logging.error(f"Configuration error: {e}")
         return
 
     watch_dir = Path(config.WATCH_DIR)
